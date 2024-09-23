@@ -15,8 +15,10 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-href_link = ["https://jobs.jobvite.com/logitech/job/o6Hsufwt",
-             "https://jobs.jobvite.com/logitech/job/oTCtufwc"]
+job_links = [
+    "https://jobs.jobvite.com/logitech/job/o6Hsufwt",
+    "https://jobs.jobvite.com/logitech/job/oTCtufwc"
+]
 
 
 class Scraper:
@@ -65,7 +67,7 @@ class Scraper:
         driver = self.driver
         all_questions = []
 
-        for link in href_link:
+        for link in job_links:
             questions = {}
 
             try:
@@ -113,7 +115,7 @@ class Scraper:
         return all_questions
 
     def fill_job(self, answers_json):
-        for link in href_link:
+        for link in job_links:
             try:
                 self.driver.get(link)
                 time.sleep(2)
@@ -143,7 +145,7 @@ class Scraper:
                     div_element = self.driver.find_element(By.ID, "attachResume")
                     div_element.find_element(By.TAG_NAME, "button").click()
                     file_input = self.driver.find_element(By.ID, "file-input-0")
-                    file_path = os.path.abspath(f"{job_data['question']['First Name*']}.pdf")
+                    file_path = os.path.abspath(f"static/resume/{job_data['question']['First Name*']} {job_data['question']['Last Name*']}.pdf")
                     file_input.send_keys(file_path)
                     file_save = WebDriverWait(self.driver, 10).until(
                         EC.invisibility_of_element_located((By.CLASS_NAME, "jv-spinner ng-hide"))
@@ -157,34 +159,20 @@ class Scraper:
                             label = element.text
                             try:
                                 select_element = each.find_element(By.TAG_NAME, "select")
-                                selected_options = select_element.find_elements(By.TAG_NAME, "option")
-                                default_option_text = "Select an option..."
-                                is_any_selected = any(
-                                    option.is_selected() and option.text.strip() != default_option_text and option.text.strip() != ''
-                                    for option in selected_options
-                                )
-                                selected_value = next(option.text for option in selected_options if option.is_selected())
-
-                                if not is_any_selected:
-                                    option_to_select = select_element.find_element(By.XPATH,
-                                                                                   f"//option[contains(text(), '{job_data.get('question')[label]}')]")
-                                    option_to_select.click()
-                                    time.sleep(5)
-                                else:
-                                    job_data.get("question")[label] = selected_value
+                            
+                                option_to_select = select_element.find_element(By.XPATH,
+                                                                                f"//option[contains(text(), '{job_data.get('question')[label]}')]")
+                                option_to_select.click()
+                                time.sleep(5)
                             except NoSuchElementException:
                                 try:
                                     input_field = each.find_element(By.TAG_NAME, "input")
                                     input_value = input_field.get_attribute("value")
                                     time.sleep(5)
-                                    if input_value == '' or label == "First Name*":
-                                        if label == "First Name*":
-                                            input_field.clear()
+                                    if input_value:
+                                        input_field.clear()
                                         input_field.send_keys(job_data.get('question')[label])
                                         time.sleep(1)
-                                    else:
-                                        job_data.get("question")[label] = input_value
-
                                 except NoSuchElementException:
                                     each.find_element(By.TAG_NAME, "textarea").send_keys(job_data.get('question')[label])
                                     time.sleep(3)

@@ -1,0 +1,48 @@
+[
+    {
+        "title": "3D CAD DESIGNER",
+        "Location of Residence and Language": "City, Country",
+        "question": {
+            "First Name*": "John",
+            "Last Name*": "Doe",
+            "Email*": "johndoe@email.com",
+            "Middle Name": "",
+            "Address*": "",
+            "City*": "City",
+            "State/Province*": "",
+            "Country*": "Country",
+            "Zip/Postal Code": "",
+            "Primary Phone*": "+1 123-456-7890",
+            "How did you find out about this opportunity?*": "Online job board",
+            "Employee Name, if employee referral": "",
+            "Are you legally authorized to work in the country where the position is located?": "Yes",
+            "Can you after receipt of an employment offer, present documents that show you have a right to lawfully work for Logitech in the country where position is located?": "Yes",
+            "Have you been previously employed with Logitech?": "No",
+            "Please include your dates of employment and previous manager.": "",
+            "What are your compensation expectations?": "Negotiable"
+        }
+    },
+    {
+        "title": "AI DESIGNER",
+        "Location of Residence and Language": "City, Country",
+        "question": {
+            "First Name*": "Jane",
+            "Last Name*": "Doe",
+            "Email*": "janedoe@email.com",
+            "Middle Name": "",
+            "Address*": "",
+            "City*": "City",
+            "State/Province*": "",
+            "Country*": "Country",
+            "Zip/Postal Code": "",
+            "Primary Phone*": "+1 987-654-3210",
+            "How did you find out about this opportunity?*": "Online job portal",
+            "Employee Name, if employee referral": "",
+            "Are you legally authorized to work in the country where the position is located?": "Yes",
+            "Can you after receipt of an employment offer, present documents that show you have a right to lawfully work for Logitech in the country where position is located?": "Yes",
+            "Have you been previously employed with Logitech?": "No",
+            "Please include your dates of employment and previous manager.": "",
+            "What are your compensation expectations?": "Competitive market rate"
+        }
+    }
+]

@@ -1,2 +1,5 @@
+openai
+PyPDF2
+python-dotenv
 selenium
 webdriver_manager
