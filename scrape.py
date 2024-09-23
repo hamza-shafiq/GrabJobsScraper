@@ -48,7 +48,7 @@ class Scraper:
         """Scrolls the web page until the element is in view."""
         driver.execute_script("arguments[0].scrollIntoView();", element)
 
-    def select_country(self, country):
+    def select_country(self, country, is_extract=False):
 
         """Selects a country from the dropdown."""
         self.driver.find_element(By.ID, "jv-country-select").click()
@@ -56,6 +56,10 @@ class Scraper:
         self.scroll_to_element(self.driver, element)
         element.click()
         time.sleep(2)
+        if is_extract:
+            options = self.driver.find_elements(By.TAG_NAME, "option")[1:]
+            options_text = [option.text for option in options if option.text != "Select an option..."]
+            return options_text
 
     def extract_questions(self):
         driver = self.driver
@@ -75,11 +79,11 @@ class Scraper:
             logger.info(f"Start scrape questions for the job title: {questions['title']}")
             apply_btn = driver.find_element(By.CLASS_NAME, "jv-button-apply")
             apply_btn.click()
-            questions["country_select"] = WebDriverWait(driver, 3).until(
+            label_for_country = WebDriverWait(driver, 3).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, "[for='jv-country-select']"))
             ).text
             driver.find_element(By.ID, "jv-country-select").click()
-            self.select_country("Spain")
+            questions[label_for_country] = self.select_country("Spain", is_extract=True)
             logger.info("Select Country: Spain")
             driver.find_element(By.CSS_SELECTOR, "[type='submit']").click()
             apply_page = WebDriverWait(driver, 3).until(
@@ -129,7 +133,7 @@ class Scraper:
                 logger.error(f"No matching data found for job title: {job_title}")
                 continue
             if country_select:
-                self.select_country(job_data["country_select"])
+                self.select_country(job_data[country_select])
                 self.driver.find_element(By.CSS_SELECTOR, "[type='submit']").click()
                 apply_page = WebDriverWait(self.driver, 3).until(
                     EC.presence_of_element_located((By.CLASS_NAME, "jv-apply-step"))
